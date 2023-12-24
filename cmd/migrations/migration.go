@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/mealibek/gin-jwt/db"
 	"github.com/mealibek/gin-jwt/initializers"
-	"github.com/mealibek/gin-jwt/models"
 )
 
 func init() {
@@ -11,5 +11,5 @@ func init() {
 }
 
 func main() {
-	initializers.DB.AutoMigrate(&models.User{})
+	initializers.DB.AutoMigrate(&db.User{})
 }

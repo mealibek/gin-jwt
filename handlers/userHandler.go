@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/mealibek/gin-jwt/db"
 	"github.com/mealibek/gin-jwt/initializers"
-	"github.com/mealibek/gin-jwt/models"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -28,7 +28,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	// Check if the user already exists
-	var existingUser models.User
+	var existingUser db.User
 	if err := initializers.DB.Where("email = ?", body.Email).First(&existingUser).Error; err == nil {
 		c.JSON(http.StatusConflict, gin.H{
 			"error": "User already exists",
@@ -47,7 +47,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	// Create the user
-	newUser := models.User{Email: body.Email, Password: string(hashedPassword)}
+	newUser := db.User{Email: body.Email, Password: string(hashedPassword)}
 
 	fmt.Println("SignUp User.")
 
@@ -81,7 +81,7 @@ func SignIn(c *gin.Context) {
 	}
 
 	// Check if the user already exists
-	var user models.User
+	var user db.User
 	if err := initializers.DB.Where("email = ?", body.Email).First(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "User is not registered",
