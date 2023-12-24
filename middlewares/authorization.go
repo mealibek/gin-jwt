@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"github.com/mealibek/gin-jwt/db"
 	"github.com/mealibek/gin-jwt/initializers"
-	"github.com/mealibek/gin-jwt/models"
 )
 
 // RequireAuth is a middleware for JWT-based authentication
@@ -40,7 +40,7 @@ func RequireAuth() gin.HandlerFunc {
 			return
 		}
 
-		var user models.User
+		var user db.User
 		if result := initializers.DB.First(&user, claims["sub"]); result.Error != nil {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 			return
